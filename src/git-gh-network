@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+readonly VERSION="0.1.0-dev"
+
+GITHUB_ORIGIN="https://github.com"
+
+declare -A REMOTE_IGNORE_LINES
+for entry in $(git config get --all "git-gh-network.ignore" || true); do
+	REMOTE_IGNORE_LINES["$entry"]=1
+done
+
+
+#	get_network_members_url:
+#		Construct GitHub network members URL from the default remote,
+#		either origin or the singular remote
+#
+#		Outputs:
+#			"https://$github_origin/$user_repo/network/members"
+function get_network_members_url {
+	repo_origin_url="$($git ls-remote --get-url)"
+	remote_regex='github\.com[:/]([[:alnum:]/]*)\.git$'
+
+	[[ "$repo_origin_url" =~ $remote_regex ]]
+	user_repo="${BASH_REMATCH[1]}"
+	echo "$GITHUB_ORIGIN/$user_repo/network/members"
+}
+
+#	get_members: url
+#		`curls` given url and parses it using htmlq
+#
+#		The `:not(.Link--secondary)` selector eliminates one own's fork
+#		from the network members parsed output
+#
+#	Output:
+#		/user1/repo1
+#		/user2/repo2
+#		...
+function get_members {
+	local url="$1"
+	curl -s "$url" | htmlq \
+		--attribute href \
+		'.repo > a:nth-of-type(3):not(.Link--secondary)'
+}
+
+#	update_remote: remote repo
+#		updates the remotes by first performing filtering based on both
+#		the ignore config and whether the tip of a branch is already in
+#		a local branch
+function update_remote {
+	local remote repo
+	remote="$1"
+	repo="$2"
+	# check if $remote is in the REMOTE_IGNORE_LINES set, which originates from
+	# the git-gh-network.ignore config entry
+	if [[ -v REMOTE_IGNORE_LINES["$remote"] ]]; then
+		echo "Ignoring repo: $remote/$repo"
+		exit 0
+	fi
+
+	local remote_url="$GITHUB_ORIGIN/$remote/$repo"
+
+	local -a branches_arg=()
+	while read -r hash ref_path; do
+		local branch="${ref_path##*/}"
+		if [[ -v REMOTE_IGNORE_LINES["$remote/$branch"] ]]; then
+			echo "Ignoring branch \"$branch\" from $remote/$repo"
+			continue
+		fi
+
+		if [[ -n "$(git branch --contains "$hash" 2>/dev/null || true)" ]]; then
+			echo "Skipping branch \"$branch\" on remote \"$remote\"," \
+				"as its ref is already in a local branch"
+			continue
+		fi
+
+		branches_arg+=(-t "$branch")
+
+	done < <(git ls-remote -b "$remote_url")
+
+	if (( ${#branches_arg[@]} != 0 )); then
+		git remote add -f "${branches_arg[@]}" "$remote" "$remote_url"
+		local -r CMT=(--comment "managed by git-gh-network")
+		git config set "${CMT[@]}" "remote.$remote.skipDefaultUpdate" true
+		git config set "${CMT[@]}" "remote.$remote.followRemoteHEAD" false
+		git config set "${CMT[@]}" --value "$remote" "remotes.network" "$remote"
+	fi
+}
+
+#	update_remotes:
+#		update remotes using update_remote in background jobs and then waits
+#		for all the tasks to finish
+function update_remotes {
+	local url
+	url="$(get_network_members_url)"
+	while IFS=/ read -r _ user repo; do
+		update_remote "$user" "$repo" &
+	done < <(get_members "$url")
+	wait
+}
+
+#	fetch:
+#		run git fetch on the network group using -j0
+function fetch {
+	git fetch -j0 network
+}
+
+
+function git-gh-network {
+	update_remotes
+	# while getopts "C:A:" opt; do
+	# 	case "$opt" in
+	# 		C)
+	# 			GIT="git -C $OPTARG"
+	# 			;;
+	# 		?)
+	# 			exit 1
+	# 			;;
+	# 	esac
+	# done
+}
+
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    echo "$@"
+	# git-gh-network "$@"
+    pwd
+fi

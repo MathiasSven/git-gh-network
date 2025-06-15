@@ -1,0 +1,8 @@
+# docs
+*.1
+
+# nix
+result
+
+# coverage
+coverage

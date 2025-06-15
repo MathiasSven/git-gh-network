@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient25">
+      <stop
+         style="stop-color:#313131;stop-opacity:1;"
+         offset="0"
+         id="stop25" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop26" />
+    </linearGradient>
+    <linearGradient
+       id="swatch10">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop10" />
+    </linearGradient>
+    <linearGradient
+       id="swatch2">
+      <stop
+         style="stop-color:#000000;stop-opacity:0.99999898;"
+         offset="0"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient25"
+       id="linearGradient26"
+       x1="153.95599"
+       y1="0"
+       x2="512"
+       y2="512"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad" />
+    <linearGradient
+       xlink:href="#linearGradient25"
+       id="linearGradient2"
+       gradientUnits="userSpaceOnUse"
+       x1="153.95599"
+       y1="0"
+       x2="512"
+       y2="512"
+       spreadMethod="pad" />
+    <linearGradient
+       xlink:href="#linearGradient25"
+       id="linearGradient3"
+       gradientUnits="userSpaceOnUse"
+       x1="153.95599"
+       y1="0"
+       x2="512"
+       y2="512"
+       spreadMethod="pad" />
+  </defs>
+  <g
+     id="layer1">
+    <g
+       id="g16"
+       style="opacity:1;mix-blend-mode:normal;fill:url(#linearGradient26);fill-opacity:1">
+      <path
+         d="m 178.03682,207.11966 v 22.2319 c 0,10.48292 8.50789,18.99078 18.9908,18.99078 h 113.94476 a 18.990792,18.990792 0 0 0 18.9908,-18.99078 v -22.2319 a 56.972379,56.972379 0 1 1 37.98157,0 v 22.2319 a 56.972379,56.972379 0 0 1 -56.97237,56.97237 h -37.9816 v 53.8832 a 56.9977,56.9977 0 1 1 -37.98157,0 v -53.8832 h -37.98159 a 56.972379,56.972379 0 0 1 -56.97237,-56.97237 v -22.2319 a 56.972379,56.972379 0 1 1 37.98157,0 z m 0,-53.73128 a 18.990792,18.990792 0 1 0 -37.98157,0 18.990792,18.990792 0 0 0 37.98157,0 z m 170.91714,18.99079 a 18.990792,18.990792 0 1 0 0,-37.98158 18.990792,18.990792 0 0 0 0,37.98158 z m -75.96318,221.55925 a 18.990792,18.990792 0 1 0 -37.98157,0 18.990792,18.990792 0 0 0 37.98157,0 z"
+         id="path1"
+         style="fill:url(#linearGradient2);fill-opacity:1;stroke-width:25.321;stroke-dasharray:none" />
+      <path
+         style="fill:url(#linearGradient3);fill-opacity:1;stroke-linejoin:bevel"
+         d="M 256,0 C 114.79195,0 0,114.79195 0,256 0,397.20805 114.79195,512 256,512 397.20805,512 512,397.20805 512,256 512,114.79195 397.20805,0 256,0 Z m 0,29.857422 C 381.07235,29.857422 482.14258,130.92765 482.14258,256 482.14258,381.07235 381.07235,482.14258 256,482.14258 130.92765,482.14258 29.857422,381.07235 29.857422,256 29.857422,130.92765 130.92765,29.857422 256,29.857422 Z"
+         id="path2" />
+    </g>
+  </g>
+</svg>
